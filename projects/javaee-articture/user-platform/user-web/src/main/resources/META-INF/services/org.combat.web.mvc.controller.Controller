@@ -1,1 +1,2 @@
 org.combat.projects.user.web.controller.HelloWorldController
+org.combat.projects.user.web.controller.UserController

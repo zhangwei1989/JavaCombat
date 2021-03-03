@@ -55,6 +55,11 @@ public class FrontControllerServlet extends HttpServlet {
             Method[] publicMethods = controllerClass.getMethods();
             // 处理方法支持的 HTTP 方法集合
             for (Method method : publicMethods) {
+                // 检查是否是 controller 中的方法
+                if (!isControllerMethod(method)) {
+                    continue;
+                }
+
                 Set<String> supportedHttpMethods = findSupportedHttpMethods(method);
                 Path pathFromMethod = method.getAnnotation(Path.class);
                 if (pathFromMethod != null) {
@@ -65,6 +70,23 @@ public class FrontControllerServlet extends HttpServlet {
             }
             controllersMapping.put(requestPath, controller);
         }
+    }
+
+    /**
+     * 检查是否是 controller 中标有 HttpMethod 注解的方法
+     *
+     * @param method 处理方法
+     * @return boolean
+     */
+    private boolean isControllerMethod(Method method) {
+        for (Annotation annotationFromMethod : method.getAnnotations()) {
+            HttpMethod httpMethod = annotationFromMethod.annotationType().getAnnotation(HttpMethod.class);
+            if (httpMethod != null) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
@@ -80,6 +102,11 @@ public class FrontControllerServlet extends HttpServlet {
             if (httpMethod != null) {
                 supportedHttpMethods.add(httpMethod.value());
             }
+        }
+
+        if (supportedHttpMethods.isEmpty()) {
+            supportedHttpMethods.addAll(asList(HttpMethod.GET, HttpMethod.POST,
+                    HttpMethod.PUT, HttpMethod.DELETE, HttpMethod.HEAD, HttpMethod.OPTIONS));
         }
 
         return supportedHttpMethods;
