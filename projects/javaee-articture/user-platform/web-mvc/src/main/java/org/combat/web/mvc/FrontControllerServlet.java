@@ -82,11 +82,6 @@ public class FrontControllerServlet extends HttpServlet {
             }
         }
 
-        if (supportedHttpMethods.isEmpty()) {
-            supportedHttpMethods.addAll(asList(HttpMethod.GET, HttpMethod.POST,
-                    HttpMethod.PUT, HttpMethod.DELETE, HttpMethod.HEAD, HttpMethod.OPTIONS));
-        }
-
         return supportedHttpMethods;
     }
 
