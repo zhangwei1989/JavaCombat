@@ -2,6 +2,9 @@ package org.combat.projects.user.sql;
 
 import org.combat.projects.user.domain.User;
 
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.sql.DataSource;
 import java.beans.BeanInfo;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
@@ -27,7 +30,13 @@ public class DBConnectionManager {
         Connection connection = null;
 
         try {
-            connection = DriverManager.getConnection(databaseURL);
+            // JNDI 配置数据源
+            Context initCtx = new InitialContext();
+            Context envCtx = (Context) initCtx.lookup("java:comp/env");
+            DataSource ds = (DataSource) envCtx.lookup("jdbc/UserPlatformDB");
+            connection = ds.getConnection();
+
+            // connection = DriverManager.getConnection(databaseURL);
             this.connection = connection;
             Statement statement = connection.createStatement();
             System.out.println(statement.execute(DROP_USERS_TABLE_DDL_SQL));
