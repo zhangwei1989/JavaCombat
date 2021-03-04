@@ -1,5 +1,8 @@
 package org.combat.projects.user.domain;
 
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+
 import java.util.Objects;
 
 /**
@@ -8,6 +11,14 @@ import java.util.Objects;
  * @since 1.0
  */
 public class User {
+
+    public User () {
+    }
+
+    public User (String name, String password) {
+        this.name = name;
+        this.password = password;
+    }
 
     private Long id;
 

@@ -22,6 +22,21 @@ public class DBConnectionManager {
         return this.connection;
     }
 
+    public void init() {
+        String databaseURL = "jdbc:derby:db/user-platform;create=true";
+        Connection connection = null;
+
+        try {
+            connection = DriverManager.getConnection(databaseURL);
+            this.connection = connection;
+            Statement statement = connection.createStatement();
+            System.out.println(statement.execute(DROP_USERS_TABLE_DDL_SQL));
+            System.out.println(statement.execute(CREATE_USERS_TABLE_DDL_SQL));
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     public void releaseConnection() {
         if (this.connection != null) {
             try {
@@ -38,8 +53,8 @@ public class DBConnectionManager {
             "id INT NOT NULL PRIMARY KEY GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1), " +
             "name VARCHAR(16) NOT NULL, " +
             "password VARCHAR(64) NOT NULL, " +
-            "email VARCHAR(64) NOT NULL, " +
-            "phoneNumber VARCHAR(64) NOT NULL" +
+            "email VARCHAR(64), " +
+            "phoneNumber VARCHAR(64)" +
             ")";
 
     public static final String INSERT_USER_DML_SQL = "INSERT INTO users(name,password,email,phoneNumber) VALUES " +

@@ -1,5 +1,6 @@
 package org.combat.projects.user.repository;
 
+import org.apache.commons.lang.StringUtils;
 import org.combat.function.ThrowableFunction;
 import org.combat.projects.user.domain.User;
 import org.combat.projects.user.sql.DBConnectionManager;
@@ -11,6 +12,7 @@ import java.lang.reflect.Method;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.*;
 import java.util.function.Consumer;
 import java.util.logging.Level;
@@ -39,13 +41,52 @@ public class DatabaseUserRepository implements UserRepository {
         this.dbConnectionManager = dbConnectionManager;
     }
 
+    public static DatabaseUserRepository init() {
+        DBConnectionManager dbConnectionManager = new DBConnectionManager();
+        dbConnectionManager.init();
+
+        return new DatabaseUserRepository(dbConnectionManager);
+    }
+
     private Connection getConnection() {
         return dbConnectionManager.getConnection();
     }
 
     @Override
     public boolean save(User user) {
-        return false;
+        StringBuilder saveSqlBuilderPrefix = new StringBuilder("INSERT INTO users(");
+        StringBuilder saveSqlBuildersuffix = new StringBuilder(" VALUES (");
+
+        if (StringUtils.isNotBlank(user.getName())) {
+            saveSqlBuilderPrefix.append(" name,");
+            saveSqlBuildersuffix.append("'" + user.getName() + "'" + ", ");
+        }
+
+        if (StringUtils.isNotBlank(user.getPassword())) {
+            saveSqlBuilderPrefix.append(" password,");
+            saveSqlBuildersuffix.append("'" + user.getPassword() + "'" + ", ");
+        }
+
+        if (StringUtils.isNotBlank(user.getEmail())) {
+            saveSqlBuilderPrefix.append(" emaill,");
+            saveSqlBuildersuffix.append("'" + user.getEmail() + "'" + ", ");
+        }
+
+        if (StringUtils.isNotBlank(user.getPhoneNumber())) {
+            saveSqlBuilderPrefix.append(" phoneNumber,");
+            saveSqlBuildersuffix.append("'" + user.getPhoneNumber() + "'" + ", ");
+        }
+
+        saveSqlBuilderPrefix.deleteCharAt(saveSqlBuilderPrefix.length() - 1);
+        saveSqlBuildersuffix.delete(saveSqlBuildersuffix.length() - 2, saveSqlBuildersuffix.length() - 1);
+        saveSqlBuilderPrefix.append(")");
+        saveSqlBuildersuffix.append(")");
+
+        String saveSql = (saveSqlBuilderPrefix.toString() + saveSqlBuildersuffix);
+
+        System.out.println(saveSql);
+
+        return executeUpdate(saveSql, COMMON_EXCEPTION_HANDLER);
     }
 
     @Override
@@ -139,6 +180,22 @@ public class DatabaseUserRepository implements UserRepository {
         return null;
     }
 
+    protected boolean executeUpdate(String sql, Consumer<Throwable> exceptionHandler) {
+        Connection connection = getConnection();
+
+        try {
+            // @TODO 待处理 SQL注入
+            Statement statement = connection.createStatement();
+
+            int count = statement.executeUpdate(sql);
+
+            return count != 0;
+        } catch (Throwable e) {
+            exceptionHandler.accept(e);
+        }
+
+        return false;
+    }
 
     private static String mapColumnLabel(String fieldName) {
         return fieldName;
@@ -157,7 +214,5 @@ public class DatabaseUserRepository implements UserRepository {
 
         preparedStatementMethodMappings.put(Long.class, "setLong"); // long
         preparedStatementMethodMappings.put(String.class, "setString"); //
-
-
     }
 }
