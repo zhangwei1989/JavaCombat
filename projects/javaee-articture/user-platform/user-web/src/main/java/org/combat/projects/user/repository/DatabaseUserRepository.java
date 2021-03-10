@@ -1,10 +1,12 @@
 package org.combat.projects.user.repository;
 
 import org.apache.commons.lang.StringUtils;
+import org.combat.context.ComponentContext;
 import org.combat.function.ThrowableFunction;
 import org.combat.projects.user.domain.User;
 import org.combat.projects.user.sql.DBConnectionManager;
 
+import java.awt.*;
 import java.beans.BeanInfo;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
@@ -14,6 +16,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.*;
+import java.util.List;
 import java.util.function.Consumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -37,15 +40,8 @@ public class DatabaseUserRepository implements UserRepository {
 
     private final DBConnectionManager dbConnectionManager;
 
-    public DatabaseUserRepository(DBConnectionManager dbConnectionManager) {
-        this.dbConnectionManager = dbConnectionManager;
-    }
-
-    public static DatabaseUserRepository init() {
-        DBConnectionManager dbConnectionManager = new DBConnectionManager();
-        dbConnectionManager.init();
-
-        return new DatabaseUserRepository(dbConnectionManager);
+    public DatabaseUserRepository() {
+        this.dbConnectionManager = ComponentContext.getInstance().getComponent("bean/DBConnectionManager");
     }
 
     private Connection getConnection() {

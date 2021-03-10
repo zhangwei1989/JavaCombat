@@ -1,9 +1,8 @@
 package org.combat.projects.user.sql;
 
+import org.combat.context.ComponentContext;
 import org.combat.projects.user.domain.User;
 
-import javax.naming.Context;
-import javax.naming.InitialContext;
 import javax.sql.DataSource;
 import java.beans.BeanInfo;
 import java.beans.Introspector;
@@ -12,48 +11,38 @@ import java.lang.reflect.Method;
 import java.sql.*;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class DBConnectionManager {
 
+    private Logger logger = Logger.getLogger(DBConnectionManager.class.getName());
+
     private Connection connection;
 
-    public void setConnection(Connection connection) {
-        this.connection = connection;
-    }
-
     public Connection getConnection() {
-        return this.connection;
-    }
-
-    public void init() {
-        String databaseURL = "jdbc:derby:db/user-platform;create=true";
         Connection connection = null;
 
         try {
             // JNDI 配置数据源
-            Context initCtx = new InitialContext();
-            Context envCtx = (Context) initCtx.lookup("java:comp/env");
-            DataSource ds = (DataSource) envCtx.lookup("jdbc/UserPlatformDB");
+            DataSource ds = ComponentContext.getInstance().getComponent("jdbc/UserPlatformDB");
             connection = ds.getConnection();
+
+            if (connection != null) {
+                logger.log(Level.INFO, "获取 JNDI 数据库连接成功！");
+                System.out.println("获取 JNDI 数据源成功！");
+            }
 
             // connection = DriverManager.getConnection(databaseURL);
             this.connection = connection;
             Statement statement = connection.createStatement();
-            System.out.println(statement.execute(DROP_USERS_TABLE_DDL_SQL));
+//            System.out.println(statement.execute(DROP_USERS_TABLE_DDL_SQL));
             System.out.println(statement.execute(CREATE_USERS_TABLE_DDL_SQL));
         } catch(Exception e) {
             e.printStackTrace();
         }
-    }
 
-    public void releaseConnection() {
-        if (this.connection != null) {
-            try {
-                this.connection.close();
-            } catch (SQLException e) {
-                throw new RuntimeException(e.getCause());
-            }
-        }
+        return connection;
     }
 
     public static final String DROP_USERS_TABLE_DDL_SQL = "DROP TABLE users";

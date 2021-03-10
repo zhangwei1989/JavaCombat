@@ -10,7 +10,7 @@ import org.combat.projects.user.service.UserService;
  */
 public class UserServiceImpl implements UserService {
 
-    UserRepository userRepository = DatabaseUserRepository.init();
+    UserRepository userRepository = new DatabaseUserRepository();
 
     @Override
     public boolean register(User user) {

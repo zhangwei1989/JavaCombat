@@ -10,4 +10,8 @@
               driverClassName="org.apache.derby.jdbc.EmbeddedDriver"
               url="jdbc:derby:db/UserPlatformDB;create=true"/>
 
+	<Resource name="bean/DBConnectionManager"
+			  type="org.combat.projects.user.sql.DBConnectionManager"  auth="Container"
+			  factory="org.apache.naming.factory.BeanFactory"/>
+
 </Context>
