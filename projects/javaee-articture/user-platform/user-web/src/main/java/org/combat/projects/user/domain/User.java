@@ -1,8 +1,11 @@
 package org.combat.projects.user.domain;
 
+import com.sun.istack.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.GeneratorType;
 
+import javax.persistence.*;
 import java.util.Objects;
 
 /**
@@ -10,6 +13,8 @@ import java.util.Objects;
  *
  * @since 1.0
  */
+@Entity
+@Table(name = "users")
 public class User {
 
     public User () {
@@ -20,6 +25,9 @@ public class User {
         this.password = password;
     }
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @NotNull
     private Long id;
 
     private String name;
