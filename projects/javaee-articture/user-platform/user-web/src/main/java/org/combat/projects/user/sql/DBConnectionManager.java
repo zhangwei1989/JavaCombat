@@ -3,6 +3,8 @@ package org.combat.projects.user.sql;
 import org.combat.context.ComponentContext;
 import org.combat.projects.user.domain.User;
 
+import javax.annotation.Resource;
+import javax.persistence.EntityManager;
 import javax.sql.DataSource;
 import java.beans.BeanInfo;
 import java.beans.Introspector;
@@ -18,31 +20,34 @@ public class DBConnectionManager {
 
     private Logger logger = Logger.getLogger(DBConnectionManager.class.getName());
 
+    @Resource(name = "jdbc/UserPlatformDB")
+    private DataSource dataSource;
+
+    @Resource(name = "bean/EntityManager")
+    private EntityManager entityManager;
+
     private Connection connection;
 
-    public Connection getConnection() {
+    public Connection getConnection() throws RuntimeException {
         Connection connection = null;
 
         try {
-            // JNDI 配置数据源
-            DataSource ds = ComponentContext.getInstance().getComponent("jdbc/UserPlatformDB");
-            connection = ds.getConnection();
+            connection = dataSource.getConnection();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
 
-            if (connection != null) {
-                logger.log(Level.INFO, "获取 JNDI 数据库连接成功！");
-                System.out.println("获取 JNDI 数据源成功！");
-            }
-
-            // connection = DriverManager.getConnection(databaseURL);
-            this.connection = connection;
-            Statement statement = connection.createStatement();
-//            System.out.println(statement.execute(DROP_USERS_TABLE_DDL_SQL));
-            System.out.println(statement.execute(CREATE_USERS_TABLE_DDL_SQL));
-        } catch(Exception e) {
-            e.printStackTrace();
+        if (connection != null) {
+            logger.log(Level.INFO, "获取 JNDI 数据库连接成功！");
         }
 
         return connection;
+    }
+
+    public EntityManager getEntityManager() {
+        System.out.println("获取 EntityManager 成功");
+        logger.info("当前 EntityManager 实现类：" + entityManager.getClass().getName());
+        return entityManager;
     }
 
     public static final String DROP_USERS_TABLE_DDL_SQL = "DROP TABLE users";
