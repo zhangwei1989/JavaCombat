@@ -1,6 +1,7 @@
 package org.combat.projects.user.validator.bean.validation;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.Resource;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;

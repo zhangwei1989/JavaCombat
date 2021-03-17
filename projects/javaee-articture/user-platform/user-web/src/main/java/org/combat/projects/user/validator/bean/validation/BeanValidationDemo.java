@@ -2,6 +2,7 @@ package org.combat.projects.user.validator.bean.validation;
 
 import org.combat.projects.user.domain.User;
 
+import javax.annotation.Resource;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
@@ -14,6 +15,9 @@ import java.util.Set;
  * @Date: 2021/3/17 10:13
  */
 public class BeanValidationDemo {
+
+    /*@Resource(name = "bean/Validator")
+    private static Validator validator;*/
 
     public static void main(String[] args) {
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();

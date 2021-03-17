@@ -1,9 +1,7 @@
 package org.combat.projects.user.domain;
 
 import com.sun.istack.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-import org.hibernate.annotations.GeneratorType;
+import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
 import javax.validation.constraints.Max;
@@ -19,16 +17,17 @@ import java.util.Objects;
 @Table(name = "users")
 public class User {
 
-    public User () {
+    public User() {
     }
 
-    public User (String name, String password) {
+    public User(String name, String password) {
         this.name = name;
         this.password = password;
     }
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Min(0)
     @NotNull
     private Long id;
 
@@ -40,6 +39,7 @@ public class User {
 
     private String email;
 
+    @Length(max = 11, min = 11)
     private String phoneNumber;
 
     public Long getId() {

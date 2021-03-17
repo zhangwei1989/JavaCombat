@@ -30,6 +30,10 @@
 				<input name="password"
 				type="text" id="inputPassword" class="form-control"
 				placeholder="请输入密码" required>
+			<label for="inputPhoneNumber" class="sr-only">Password</label>
+            				<input name="phoneNumber"
+            				type="text" id="inputPhoneNumber" class="form-control"
+            				placeholder="请输入电话号码" required>
 			<button class="btn btn-lg btn-primary btn-block" type="submit">Register</button>
 			<p class="mt-5 mb-3 text-muted">&copy; 2017-2021</p>
 		</form>

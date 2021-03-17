@@ -30,6 +30,8 @@
         <lombok.version>1.18.18</lombok.version>
         <hibernate.version>5.4.29.Final</hibernate.version>
         <hibernate.validator.version>6.1.7.Final</hibernate.validator.version>
+        <javax.el.api.version>3.0.0</javax.el.api.version>
+        <javax.el.version>3.0.1-b11</javax.el.version>
 
         <!-- Maven Plugins 版本 -->
         <maven.compiler.version>3.8.1</maven.compiler.version>
@@ -110,6 +112,18 @@
                 <groupId>org.hibernate.validator</groupId>
                 <artifactId>hibernate-validator</artifactId>
                 <version>${hibernate.validator.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>javax.el</groupId>
+                <artifactId>javax.el-api</artifactId>
+                <version>${javax.el.api.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.glassfish</groupId>
+                <artifactId>javax.el</artifactId>
+                <version>${javax.el.version}</version>
             </dependency>
 
         </dependencies>

@@ -6,6 +6,9 @@ import org.combat.projects.user.service.UserService;
 
 import javax.annotation.Resource;
 import javax.persistence.EntityManager;
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
+import java.util.Set;
 
 /**
  * 用户接口实现类
@@ -18,8 +21,21 @@ public class UserServiceImpl implements UserService {
     @Resource(name = "bean/UserRepository")
     private UserRepository userRepository;
 
+    @Resource(name = "bean/Validator")
+    private Validator validator;
+
     @Override
     public boolean register(User user) {
+        Set<ConstraintViolation<User>> violationSet = validator.validate(user);
+
+        for (ConstraintViolation<User> violation : violationSet) {
+            System.out.println(violation.getMessage());
+        }
+
+        if (violationSet.size() != 0) {
+            return false;
+        }
+
         return userRepository.save(user);
     }
 
