@@ -1,12 +1,11 @@
 package org.combat.projects.user.repository;
 
 import org.apache.commons.lang.StringUtils;
-import org.combat.context.ComponentContext;
 import org.combat.function.ThrowableFunction;
 import org.combat.projects.user.domain.User;
 import org.combat.projects.user.sql.DBConnectionManager;
 
-import java.awt.*;
+import javax.annotation.Resource;
 import java.beans.BeanInfo;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
@@ -16,7 +15,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.*;
-import java.util.List;
 import java.util.function.Consumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -26,6 +24,9 @@ import static org.apache.commons.lang.ClassUtils.wrapperToPrimitive;
 public class DatabaseUserRepository implements UserRepository {
 
     private static Logger logger = Logger.getLogger(DatabaseUserRepository.class.getName());
+
+    @Resource(name = "bean/DBConnectionManager")
+    private DBConnectionManager dbConnectionManager;
 
     /**
      * 通用处理方式
@@ -37,12 +38,6 @@ public class DatabaseUserRepository implements UserRepository {
                     "(?,?,?,?)";
 
     public static final String QUERY_ALL_USERS_DML_SQL = "SELECT id,name,password,email,phoneNumber FROM users";
-
-    private final DBConnectionManager dbConnectionManager;
-
-    public DatabaseUserRepository() {
-        this.dbConnectionManager = ComponentContext.getInstance().getComponent("bean/DBConnectionManager");
-    }
 
     private Connection getConnection() {
         return dbConnectionManager.getConnection();

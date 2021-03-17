@@ -1,15 +1,15 @@
 package org.combat.projects.user.web.controller;
 
+import org.combat.context.ComponentContext;
+import org.combat.projects.user.domain.User;
+import org.combat.projects.user.service.UserService;
+import org.combat.web.mvc.controller.PageController;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
-
-import org.combat.projects.user.domain.User;
-import org.combat.projects.user.service.UserService;
-import org.combat.projects.user.service.impl.UserServiceImpl;
-import org.combat.web.mvc.controller.PageController;
 
 /**
  * 用户管理控制器
@@ -17,7 +17,7 @@ import org.combat.web.mvc.controller.PageController;
 @Path("/user")
 public class UserController implements PageController  {
 
-    private UserService userService = new UserServiceImpl();
+    private static UserService userService = ComponentContext.getInstance().getComponent("bean/UserService");
 
     @GET
     @POST

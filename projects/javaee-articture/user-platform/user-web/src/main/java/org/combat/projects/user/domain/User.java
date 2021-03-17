@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GeneratorType;
 
 import javax.persistence.*;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import java.util.Objects;
 
 /**
@@ -32,6 +34,8 @@ public class User {
 
     private String name;
 
+    @Max(32)
+    @Min(6)
     private String password;
 
     private String email;
