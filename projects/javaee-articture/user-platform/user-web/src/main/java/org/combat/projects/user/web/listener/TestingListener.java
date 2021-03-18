@@ -6,6 +6,7 @@ import org.combat.projects.user.sql.DBConnectionManager;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import java.sql.SQLException;
@@ -33,13 +34,27 @@ public class TestingListener implements ServletContextListener {
         ComponentContext context = ComponentContext.getInstance();
         DBConnectionManager dbConnectionManager = context.getComponent("bean/DBConnectionManager");
 
-        try {
+        testPropertyFromJNDI(context);
+
+        testPropertyFromServletContext(sce.getServletContext());
+
+        /*try {
             Statement statement = dbConnectionManager.getConnection().createStatement();
             System.out.println(statement.execute(CREATE_USERS_TABLE_DDL_SQL));
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
-        testUser(dbConnectionManager.getEntityManager());
+        testUser(dbConnectionManager.getEntityManager());*/
+    }
+
+    private void testPropertyFromServletContext(ServletContext servletContext) {
+        String propertyName = "application.name";
+        System.out.println("ServletContext property " + propertyName + ": [" + servletContext.getInitParameter(propertyName) + "]");
+    }
+
+    private void testPropertyFromJNDI(ComponentContext context) {
+        String propertyName = "maxValue";
+        System.out.println("JNDI property " + propertyName + ": [" + context.lookupComponent("maxValue") + "]");
     }
 
     private void testUser(EntityManager entityManager) {

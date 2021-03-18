@@ -111,7 +111,7 @@ public class ComponentContext {
         componentNames.forEach(name -> componentsMap.put(name, lookupComponent(name)));
     }
 
-    private <C> C lookupComponent(String name) {
+    public <C> C lookupComponent(String name) {
         return executeInContext(context -> (C) context.lookup(name));
     }
 
