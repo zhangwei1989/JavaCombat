@@ -42,11 +42,16 @@ public class DefaultConfigProviderResolver extends ConfigProviderResolver {
     }
 
     protected Config newConfig(ClassLoader classLoader) {
-        return newConfigBuilder(classLoader).build();
+        ConfigBuilder configBuilder = newConfigBuilder(classLoader);
+
+        return configBuilder.build();
     }
 
     protected ConfigBuilder newConfigBuilder(ClassLoader classLoader) {
-        return new DefaultConfigBuilder(resolveClassLoader(classLoader));
+        DefaultConfigBuilder defaultConfigBuilder = new DefaultConfigBuilder(resolveClassLoader(classLoader));
+
+        defaultConfigBuilder.initConfigSourcesAndConverters();
+        return defaultConfigBuilder;
     }
 
     private ClassLoader resolveClassLoader(ClassLoader classLoader) {

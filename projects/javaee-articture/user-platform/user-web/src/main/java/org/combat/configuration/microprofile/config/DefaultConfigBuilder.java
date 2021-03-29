@@ -71,4 +71,10 @@ public class DefaultConfigBuilder implements ConfigBuilder {
         Config config = new DefaultConfig(configSources, converters);
         return config;
     }
+
+    public void initConfigSourcesAndConverters() {
+        this.addDefaultSources();
+        this.addDiscoveredSources();
+        this.addDiscoveredConverters();
+    }
 }

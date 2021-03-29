@@ -1,0 +1,8 @@
+org.combat.configuration.microprofile.config.converter.BooleanConverter
+org.combat.configuration.microprofile.config.converter.ByteConverter
+org.combat.configuration.microprofile.config.converter.DoubleConverter
+org.combat.configuration.microprofile.config.converter.FloatConverter
+org.combat.configuration.microprofile.config.converter.IntegerConverter
+org.combat.configuration.microprofile.config.converter.LongConverter
+org.combat.configuration.microprofile.config.converter.ShortConverter
+org.combat.configuration.microprofile.config.converter.StringConverter
