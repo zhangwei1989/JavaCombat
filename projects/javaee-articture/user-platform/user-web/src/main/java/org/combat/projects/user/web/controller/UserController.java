@@ -1,5 +1,6 @@
 package org.combat.projects.user.web.controller;
 
+import org.combat.context.ClassicComponentContext;
 import org.combat.context.ComponentContext;
 import org.combat.projects.user.domain.User;
 import org.combat.projects.user.service.UserService;
@@ -17,7 +18,7 @@ import javax.ws.rs.Path;
 @Path("/user")
 public class UserController implements PageController  {
 
-    private static UserService userService = ComponentContext.getInstance().getComponent("bean/UserService");
+    private static UserService userService = ClassicComponentContext.getInstance().getComponent("bean/UserService");
 
     @GET
     @POST

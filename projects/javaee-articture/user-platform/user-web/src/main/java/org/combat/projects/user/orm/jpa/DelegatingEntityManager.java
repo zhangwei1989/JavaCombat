@@ -1,5 +1,6 @@
 package org.combat.projects.user.orm.jpa;
 
+import org.combat.context.ClassicComponentContext;
 import org.combat.context.ComponentContext;
 
 import javax.annotation.PostConstruct;
@@ -44,7 +45,7 @@ public class DelegatingEntityManager implements EntityManager {
             String propertyValue = properties.getProperty(propertyName);
             if (propertyValue.startsWith("@")) {
                 String componentName = propertyValue.substring(1);
-                Object component = ComponentContext.getInstance().getComponent(componentName);
+                Object component = ClassicComponentContext.getInstance().getComponent(componentName);
                 properties.put(propertyName, component);
             }
         }

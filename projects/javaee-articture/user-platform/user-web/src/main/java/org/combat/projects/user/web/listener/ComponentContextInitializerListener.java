@@ -1,5 +1,6 @@
 package org.combat.projects.user.web.listener;
 
+import org.combat.context.ClassicComponentContext;
 import org.combat.context.ComponentContext;
 
 import javax.servlet.ServletContext;
@@ -13,13 +14,12 @@ public class ComponentContextInitializerListener implements ServletContextListen
     @Override
     public void contextInitialized(ServletContextEvent sce) {
         this.servletContext = sce.getServletContext();
-        ComponentContext componentContext = new ComponentContext();
+        ClassicComponentContext componentContext = new ClassicComponentContext();
         componentContext.init(this.servletContext);
-
     }
 
     @Override
     public void contextDestroyed(ServletContextEvent sce) {
-        ComponentContext.getInstance().destroy();
+        ClassicComponentContext.getInstance().destroy();
     }
 }

@@ -1,4 +1,4 @@
-package org.combat.configuration.microprofile.config;
+package rg.combat.configuration.microprofile.config;
 
 import org.eclipse.microprofile.config.spi.ConfigProviderResolver;
 import org.junit.Before;
@@ -27,14 +27,16 @@ public class ConfigTest {
 
     @Test
     public void testResolveConvertedType() {
-        ServiceLoader<ConfigProviderResolver> serviceLoader =
+        /*ServiceLoader<ConfigProviderResolver> serviceLoader =
                 ServiceLoader.load(ConfigProviderResolver.class, Thread.currentThread().getContextClassLoader());
 
         Iterator<ConfigProviderResolver> iterator = serviceLoader.iterator();
         ConfigProviderResolver configProviderResolver = null;
         if (iterator.hasNext()) {
             configProviderResolver = iterator.next();
-        }
+        }*/
+
+        ConfigProviderResolver configProviderResolver = ConfigProviderResolver.instance();
 
         String name = configProviderResolver.getConfig(Thread.currentThread().getContextClassLoader())
                 .getValue("name", String.class);

@@ -14,11 +14,22 @@
     <name>User Web Application ${revision}</name>
     <packaging>war</packaging>
 
-
     <dependencies>
         <dependency>
             <groupId>org.combat.projects</groupId>
             <artifactId>web-mvc</artifactId>
+            <version>${revision}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.combat.projects</groupId>
+            <artifactId>my-configuration</artifactId>
+            <version>${revision}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.combat.projects</groupId>
+            <artifactId>my-dependency-injection</artifactId>
             <version>${revision}</version>
         </dependency>
 
@@ -78,10 +89,12 @@
             <artifactId>javax.el</artifactId>
         </dependency>
 
+        <!-- Jolokia -->
         <dependency>
-            <groupId>org.eclipse.microprofile.config</groupId>
-            <artifactId>microprofile-config-api</artifactId>
+            <groupId>org.jolokia</groupId>
+            <artifactId>jolokia-core</artifactId>
         </dependency>
+
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>

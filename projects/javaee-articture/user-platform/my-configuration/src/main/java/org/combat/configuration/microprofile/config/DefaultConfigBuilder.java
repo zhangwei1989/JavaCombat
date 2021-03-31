@@ -72,9 +72,4 @@ public class DefaultConfigBuilder implements ConfigBuilder {
         return config;
     }
 
-    public void initConfigSourcesAndConverters() {
-        this.addDefaultSources();
-        this.addDiscoveredSources();
-        this.addDiscoveredConverters();
-    }
 }

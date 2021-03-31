@@ -4,7 +4,10 @@ import org.eclipse.microprofile.config.Config;
 import org.eclipse.microprofile.config.spi.ConfigBuilder;
 import org.eclipse.microprofile.config.spi.ConfigProviderResolver;
 
-import java.util.*;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
@@ -48,10 +51,7 @@ public class DefaultConfigProviderResolver extends ConfigProviderResolver {
     }
 
     protected ConfigBuilder newConfigBuilder(ClassLoader classLoader) {
-        DefaultConfigBuilder defaultConfigBuilder = new DefaultConfigBuilder(resolveClassLoader(classLoader));
-
-        defaultConfigBuilder.initConfigSourcesAndConverters();
-        return defaultConfigBuilder;
+        return new DefaultConfigBuilder(resolveClassLoader(classLoader));
     }
 
     private ClassLoader resolveClassLoader(ClassLoader classLoader) {
@@ -60,7 +60,7 @@ public class DefaultConfigProviderResolver extends ConfigProviderResolver {
 
     @Override
     public ConfigBuilder getBuilder() {
-        return null;
+        return newConfigBuilder(null);
     }
 
     @Override

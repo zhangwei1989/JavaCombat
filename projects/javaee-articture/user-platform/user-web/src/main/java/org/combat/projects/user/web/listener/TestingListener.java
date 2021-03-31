@@ -1,5 +1,6 @@
 package org.combat.projects.user.web.listener;
 
+import org.combat.context.ClassicComponentContext;
 import org.combat.context.ComponentContext;
 import org.combat.projects.user.domain.User;
 import org.combat.projects.user.sql.DBConnectionManager;
@@ -31,7 +32,7 @@ public class TestingListener implements ServletContextListener {
 
     @Override
     public void contextInitialized(ServletContextEvent sce) {
-        ComponentContext context = ComponentContext.getInstance();
+        ClassicComponentContext context = ClassicComponentContext.getInstance();
         DBConnectionManager dbConnectionManager = context.getComponent("bean/DBConnectionManager");
 
         testPropertyFromJNDI(context);
@@ -52,7 +53,7 @@ public class TestingListener implements ServletContextListener {
         System.out.println("ServletContext property " + propertyName + ": [" + servletContext.getInitParameter(propertyName) + "]");
     }
 
-    private void testPropertyFromJNDI(ComponentContext context) {
+    private void testPropertyFromJNDI(ClassicComponentContext context) {
         String propertyName = "maxValue";
         System.out.println("JNDI property " + propertyName + ": [" + context.lookupComponent("maxValue") + "]");
     }
