@@ -35,3 +35,8 @@
 
 ### 三：
 - [ ] 阅读 Servlet 规范中 Security 章节（Servlet 容器安全）
+
+## 实践 Part 5
+- [ ] 修复程序 org.combat.reactive.streams 包下 的 Bug
+- [ ] 继续完善 my-rest-client POST 方法
+- [ ] 读一下 Servlet 3.0 关于 Servlet 异步：AsyncContext
