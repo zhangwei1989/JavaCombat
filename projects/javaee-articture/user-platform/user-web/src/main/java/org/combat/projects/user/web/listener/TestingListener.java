@@ -2,9 +2,11 @@ package org.combat.projects.user.web.listener;
 
 import org.combat.context.ClassicComponentContext;
 import org.combat.context.ComponentContext;
+import org.combat.function.ThrowableAction;
 import org.combat.projects.user.domain.User;
 import org.combat.projects.user.sql.DBConnectionManager;
 
+import javax.jms.*;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.servlet.ServletContext;
@@ -46,6 +48,9 @@ public class TestingListener implements ServletContextListener {
             throwables.printStackTrace();
         }
         testUser(dbConnectionManager.getEntityManager());*/
+
+        ConnectionFactory connectionFactory = context.getComponent("jms/activemq-factory");
+        testJms(connectionFactory);
     }
 
     private void testPropertyFromServletContext(ServletContext servletContext) {
@@ -69,6 +74,58 @@ public class TestingListener implements ServletContextListener {
         entityManager.persist(user);
         transaction.commit();
         System.out.println(entityManager.find(User.class, user.getId()));
+    }
+
+    private void testJms(ConnectionFactory connectionFactory) {
+        ThrowableAction.execute(() -> {
+            testMessageProducer(connectionFactory);
+            testMessageConsumer(connectionFactory);
+        });
+    }
+
+    private void testMessageProducer(ConnectionFactory connectionFactory) throws Throwable {
+        Connection connection = connectionFactory.createConnection();
+        connection.start();
+
+        Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
+
+        Destination destination = session.createQueue("TEST.FOO");
+
+        MessageProducer producer = session.createProducer(destination);
+        producer.setDeliveryMode(DeliveryMode.NON_PERSISTENT);
+
+        String text = "Hello world! From: " + Thread.currentThread().getName() + " : " + this.hashCode();
+        TextMessage message = session.createTextMessage(text);
+
+        producer.send(message);
+
+        System.out.printf("[Thread : %s] Sent message: %s\n ", Thread.currentThread().getName(), message.getText());
+
+        session.close();
+        connection.close();
+    }
+
+    private void testMessageConsumer(ConnectionFactory connectionFactory) throws JMSException {
+        Connection connection = connectionFactory.createConnection();
+        connection.start();
+
+        Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
+
+        Destination destination = session.createQueue("TEST.FOO");
+
+        MessageConsumer consumer = session.createConsumer(destination);
+
+        consumer.setMessageListener(message -> {
+            TextMessage textMessage = (TextMessage) message;
+            try {
+                System.out.printf("[Thread : %s] Received : %s\n", Thread.currentThread().getName(), textMessage.getText());
+            } catch (JMSException e) {
+                throw new RuntimeException(e);
+            }
+        });
+
+        /*session.close();
+        connection.close();*/
     }
 
     @Override

@@ -89,6 +89,12 @@
             <artifactId>javax.el</artifactId>
         </dependency>
 
+        <!-- ActiveMQ -->
+        <dependency>
+            <groupId>org.apache.activemq</groupId>
+            <artifactId>activemq-all</artifactId>
+        </dependency>
+
         <!-- Jolokia -->
         <dependency>
             <groupId>org.jolokia</groupId>

@@ -1,38 +1,65 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Context>
-	<WatchedResource>WEB-INF/web.xml</WatchedResource>
+    <WatchedResource>WEB-INF/web.xml</WatchedResource>
 
-	<Resource name="jdbc/UserPlatformDB"
-              type="javax.sql.DataSource"  auth="Container"
+    <Resource name="jdbc/UserPlatformDB"
+              type="javax.sql.DataSource" auth="Container"
               description="Derby database for User Platform"
               maxActive="100" maxIdle="30" maxWait="10000"
-              username="" password="" 
+              username="" password=""
               driverClassName="org.apache.derby.jdbc.EmbeddedDriver"
               url="jdbc:derby:db/UserPlatformDB;create=true"/>
 
-	<Resource name="bean/DBConnectionManager"
-			  type="org.combat.projects.user.sql.DBConnectionManager"  auth="Container"
-			  factory="org.apache.naming.factory.BeanFactory"/>
+    <Resource name="bean/DBConnectionManager"
+              type="org.combat.projects.user.sql.DBConnectionManager" auth="Container"
+              factory="org.apache.naming.factory.BeanFactory"/>
 
-	<Resource name="bean/UserRepository"
-			  type="org.combat.projects.user.repository.DatabaseUserRepository"  auth="Container"
-			  factory="org.apache.naming.factory.BeanFactory"/>
+    <Resource name="bean/UserRepository"
+              type="org.combat.projects.user.repository.DatabaseUserRepository" auth="Container"
+              factory="org.apache.naming.factory.BeanFactory"/>
 
-	<Resource name="bean/EntityManager" auth="Container"
-			  type="org.combat.projects.user.orm.jpa.DelegatingEntityManager"
-			  persistenceUnitName="emf"
-			  propertiesLocation="META-INF/jpa-datasource.properties"
-			  factory="org.apache.naming.factory.BeanFactory" />
+    <Resource name="bean/EntityManager" auth="Container"
+              type="org.combat.projects.user.orm.jpa.DelegatingEntityManager"
+              persistenceUnitName="emf"
+              propertiesLocation="META-INF/jpa-datasource.properties"
+              factory="org.apache.naming.factory.BeanFactory"/>
 
-	<Resource name="bean/Validator" auth="Container"
-			  type="org.combat.projects.user.validator.bean.validation.DelegatingValidator"
-			  factory="org.apache.naming.factory.BeanFactory" />
+    <Resource name="bean/Validator" auth="Container"
+              type="org.combat.projects.user.validator.bean.validation.DelegatingValidator"
+              factory="org.apache.naming.factory.BeanFactory"/>
 
-	<Resource name="bean/UserService" auth="Container"
-			  type="org.combat.projects.user.service.impl.UserServiceImpl"
-			  factory="org.apache.naming.factory.BeanFactory" />
+    <Resource name="bean/UserService" auth="Container"
+              type="org.combat.projects.user.service.impl.UserServiceImpl"
+              factory="org.apache.naming.factory.BeanFactory"/>
 
-	<!-- Tomcat JNDI 配置 -->
-	<Environment name="maxValue" value="12"
-				 type="java.lang.Integer" override="false"/>
+    <!-- Tomcat JNDI 配置 -->
+    <Environment name="maxValue" value="12"
+                 type="java.lang.Integer" override="false"/>
+
+    <Resource name="bean/TestingComponent" auth="Container"
+              type="org.combat.projects.user.web.listener.TestingComponent"
+              factory="org.apache.naming.factory.BeanFactory"/>
+
+    <Resource name="jms/activemq-factory"
+              auth="Container"
+              type="org.apache.activemq.ActiveMQConnectionFactory"
+              description="JMS Connection Factory"
+              factory="org.apache.activemq.jndi.JNDIReferenceFactory"
+              brokerURL="tcp://127.0.0.1:61616"
+              brokerName="LocalActiveMQBroker"
+              useEmbeddedBroker="false"/>
+
+    <Resource name="jms/activemq-topic"
+              auth="Container"
+              type="org.apache.activemq.command.ActiveMQTopic"
+              factory="org.apache.activemq.jndi.JNDIReferenceFactory"
+              physicalName="activemq-topic"/>
+
+    <Resource name="jms/message-producer"
+              auth="Container"
+              type="javax.jms.MessageProducer"
+              factory="org.combat.projects.user.message.MessageProducerFactory"
+              connectionFactoryJNDIName="activemq-factory"
+              queueName="TEST.FOO"
+    />
 </Context>
