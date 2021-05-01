@@ -46,3 +46,7 @@ my-cache 模块
 - [ ] 提供一套抽象 API 实现对象的序列化和反序列化
 - [ ] 通过 Lettuce 实现一套 Redis CacheManager 以及 Cache
 
+## 实践 Part 7
+- [ ] 使用 Spring Boot 实现一个整合 Gitee 或者 Github OAuth2 认证
+- [ ] 使用 Servlet 实现一个整合 Gitee 或者 Github OAuth2 认证
+
