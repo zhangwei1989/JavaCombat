@@ -13,10 +13,12 @@
     <modules>
         <module>web-mvc</module>
         <module>user-web</module>
+        <module>user-data</module>
         <module>my-configuration</module>
         <module>my-dependency-injection</module>
         <module>my-rest-client</module>
         <module>my-reactive-messaging</module>
+        <module>my-cache</module>
     </modules>
 
     <properties>
